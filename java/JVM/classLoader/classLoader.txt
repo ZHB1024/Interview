@@ -1,0 +1,32 @@
+ClassLoader使用的是双亲委托模型来搜索类的
+可以避免重复加载
+JVM在判定两个class是否相同时，不仅要判断两个类名是否相同，而且要判断是否由同一个类加载器实例加载的。
+只有两者同时满足的情况下，JVM才认为这两个class是相同的。
+
+
+程序在启动的时候，并不会一次性加载程序所要用的所有class文件，
+而是根据程序的需要，通过Java的类加载机制（ClassLoader）来动态加载某个class文件到内存当中的，
+从而只有class文件被载入到了内存之后，才能被其它class所引用。
+所以ClassLoader就是用来动态加载class文件到内存当中用的。
+
+Java默认提供的三个ClassLoader：
+
+BootStrap ClassLoader：
+称为启动类加载器，是Java类加载层次中最顶层的类加载器，负责加载JDK中的核心类库，
+如：rt.jar、resources.jar、charsets.jar等，可通过如下程序获得该类加载器从哪些地方加载了相关的jar或class文件：
+URL[] urls = sun.misc.Launcher.getBootstrapClassPath().getURLs();    
+for (int i = 0; i < urls.length; i++) {    
+    System.out.println(urls[i].toExternalForm());    
+}  
+
+Extension ClassLoader：
+称为扩展类加载器，负责加载Java的扩展类库，默认加载JAVA_HOME/jre/lib/ext/目下的所有jar。
+
+App ClassLoader：
+称为系统类加载器，负责加载应用程序classpath目录下的所有jar和class文件。
+
+除了Java默认提供的三个ClassLoader之外，用户还可以根据需要定义自已的ClassLoader，
+而这些自定义的ClassLoader都必须继承自java.lang.ClassLoader类，
+也包括Java提供的另外二个ClassLoader（Extension ClassLoader和App ClassLoader）在内，
+但是Bootstrap ClassLoader不继承自ClassLoader，因为它不是一个普通的Java类，底层由C++编写，已嵌入到了JVM内核当中，
+当JVM启动后，Bootstrap ClassLoader也随着启动，负责加载完核心类库后，并构造Extension ClassLoader和App ClassLoader类加载器。

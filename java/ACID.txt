@@ -1,0 +1,2 @@
+ACID（原子性、一致性、隔离性和持久性）
+Atomic  Consistent Insulation  Duration

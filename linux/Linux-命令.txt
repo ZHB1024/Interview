@@ -1,0 +1,50 @@
+
+查询命令：http://man.linuxde.net/
+
+查看、编辑文件
+vi 打开一个不存在的文件a时，在没有输入保存命令时，a文件是不会存储到机器磁盘上的。
+vi打开一个文件时，进入的是阅读模式，只有输入相关命令才会进入编辑模式：
+i :在当前位置插入
+a:在当前位置后追加
+o:在当前位置的后面插入一行
+I :在行头插入
+A:在行尾追加
+O:在当前位置的前面插入一行
+
+'ESC'键从编辑模式转换到阅读模式
+
+阅读模式（或叫命令模式）下：
+:w 保存文件
+:w filename 保存成filename文件
+:q 退出
+:q! 强行退出
+:w! 强行写
+:wq 保存退出
+:x 同wq
+
+删除文件
+rm -f name
+
+上传文件
+rz
+
+
+查看文件Linux命令：http://jingyan.baidu.com/article/656db91882f677e381249c14.html
+more filename
+tail -10f filename
+ctrl+c 退出
+
+kill -9 pid
+
+
+ps -ef   查看进程
+ps -ef|grep java|grep client  查看client的进程
+
+Linux要查看tomcat目前用的jdk版本
+进入tomcat安装文件夹的bin目录下 执行./version.sh   就可以看到了，查看如下：
+
+
+
+查看端口占用
+netstat –apn
+netstat –apn|grep 8080
