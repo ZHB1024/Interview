@@ -1,0 +1,45 @@
+
+
+
+
+注解作用域
+spring bean 默认是singleton，IOC容器中只会存在一个共享的bean实例。
+可通过scope属性来设置bean的作用域，
+例如：
+一、xml配置方式
+<bean id="empServiceImpl" class="cn.csdn.service.EmpServiceImpl" scope="prototype">
+目前scope可以取：
+基本作用域
+1、singleton: 在Spring的IoC容器中只存在一个对象实例，所有该对象的引用都共享这个实例。Spring 容器会维护这个实例，
+这个实例会被保存到缓存中，并且对该bean的所有后续请求和引用都将返回该缓存中的对象实例，一般情况下，无状态的bean使用该scope。
+2、prototype:每次对该bean的请求都会创建一个新的实例，一般情况下，有状态的bean使用该scope，spring new完成后，就不在维护它了。
+Web 作用域
+3、request：每次http请求将会有各自的bean实例，类似于prototype。
+4、session：在一个http session中，一个bean定义对应一个bean实例。
+5、global session：在一个全局的http session中，一个bean定义对应一个bean实例。典型情况下，仅在使用portlet context的时候有效。
+自定义作用域
+6、自定义作用域，实现org.springframework.beans.factory.config.Scope接口。
+二、
+注解方式（annotation）
+@scope完成bean的作用域配置默认是单例模式（singleton）
+如果需要设置的话可以修改对应值与以上提到的一致例如：@Scope("prototype")
+
+有状态和无状态会话bean的本质区别是它们的生命期。
+bean保持了用户的信息，即“有状态”。
+无状态会话bean ：bean一旦实例化就被加进会话池中，各个用户都可以共用。
+由于没有特定的用户，那么也就不能保持某一用户的状态，所以叫无状态bean。
+但无状态会话bean 并非没有状态，如果它有自己的属性（变量），
+那么这些变量就会受到所有调用它的用户的影响，这是在实际应用中必须注意的
+
+
+自动装配 注解的含义
+都可以写在字段上,或写在setter方法上。 
+Autowired(required = false) （属于spring的）
+spring将自动在代码上下文中找到和其匹配的Bean，并自动注入到相应的地方去。
+默认先按byType，如果发现找到多个bean，则又按照byName方式比对，如果还有多个，则报出异常。 
+另外可以增加@Qualifier("baseDao")来指定装配哪一个bean。
+
+@Resource（属于J2EE）
+默认按byName自动注入。其次按byType。
+
+
