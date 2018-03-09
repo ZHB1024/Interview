@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<schema name="msg" version="1.5">
+
+ <fields>
+   <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
+   <field name="_version_" type="long" indexed="true" stored="true" /> 
+   
+   <field name="msg_type" type="int" indexed="false" stored="true" required="true"/> 
+   <field name="root_id" type="string" stored="true" required="true" /> 
+   <field name="send_uid" type="string" indexed="false" stored="true" required="true"  />
+   <field name="first_rcv_uid" type="string" indexed="false" stored="true"/>
+   <field name="rcv_count" type="int" indexed="false" stored="true"/>
+   <field name="parent_id" type="string" stored="true" required="false"  />
+   <field name="root_uid" type="string" indexed="false" stored="true" required="true"   />
+   <field name="parent_uid" type="string" indexed="false" stored="true" required="false"  />
+   <field name="title" type="string" indexed="false" stored="true" required="true"/>
+   <field name="content" type="string" indexed="false" stored="true"/>
+   <field name="createdon" type="tdate" indexed="false" stored="true"/>
+   <field name="delegate_uid" type="string" indexed="true" stored="false" required="true" multiValued="true"/>
+   <field name="attach_title" type="string" indexed="false" stored="true" required="false" multiValued="true"/>
+   <field name="delegate_uname" type="string" indexed="false" stored="true" required="false" multiValued="true"/>
+   <field name="delegate_dwmc" type="string" indexed="false" stored="true" required="false" multiValued="true"/>
+   
+   <!-- catchall field, containing all other searchable text fields (implemented via copyField further on in this schema  -->
+   <field name="text" type="textMaxWord" indexed="true" stored="false" multiValued="true"/>
+ </fields>
+ 
+ <uniqueKey>id</uniqueKey>
+ <solrQueryParser defaultOperator="OR"/>
+
+ <defaultSearchField>text</defaultSearchField>
+ 
+ <copyField source="title"     dest="text"/>
+ <copyField source="content"   dest="text"/>
+ <copyField source="attach_title"   dest="text"/>
+ <copyField source="delegate_uname"   dest="text"/>
+ <copyField source="delegate_dwmc"   dest="text"/>
+
+ 
+ <types>
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+    <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="tdate" class="solr.TrieDateField" precisionStep="6" positionIncrementGap="0"/>
+    <fieldtype name="textMaxWord" class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="com.chenlb.mmseg4j.solr.MMSegTokenizerFactory" mode="max-word" dicPath="dic"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldtype>
+
+    <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+        <!-- in this example, we will only use synonyms at query time
+        <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
+        -->
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+        <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
+ </types>
+
+</schema>
