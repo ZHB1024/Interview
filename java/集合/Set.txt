@@ -1,0 +1,36 @@
+
+无序、不能重复
+
+一、HashSet
+按照哈希值来存的所以取数据也是按照哈希值取得。
+通过元素的hashcode（）和equals方法进行判断元素师否重复。
+元素的哈希值是通过元素的hashcode方法 来获取的, HashSet首先判断两个元素的哈希值，如果哈希值一样，
+接着会比较equals方法 如果 equls结果为true ，HashSet就视为同一个元素。如果equals 为false就不是同一个元素。
+
+如果对象的hashCode值是不同的，那么HashSet会认为对象是不可能相等的。
+因此我们自定义类的时候需要重写hashCode，来确保对象具有相同的hashCode值。
+一个hashCode位置上可以存放多个元素。
+
+二、TreeSet
+红黑树算法
+左小右大TreeSet属于Set集合，该集合的元素是不能重复的，
+可以确保集合元素处于排序状态。TreeSet支持两种排序方式，自然排序 和定制排序，其中自然排序为默认的排序方式
+自然排序
+自然排序使用要排序元素的CompareTo（Object obj）方法来比较元素之间大小关系，然后将元素按照升序排列。
+Java提供了一个Comparable接口，该接口里定义了一个compareTo(Object obj)方法，该方法返回一个整数值，实现了该接口的对象就可以比较大小。
+obj1.compareTo(obj2)方法如果返回0，则说明被比较的两个对象相等，如果返回一个正数，则表明obj1大于obj2，如果是 负数，则表明obj1小于obj2。
+如果我们将两个对象的equals方法总是返回true，则这两个对象的compareTo方法返回应该返回0
+定制排序
+自然排序是根据集合元素的大小，以升序排列，如果要定制排序，应该使用Comparator接口，实现 int compare(T o1,T o2)方法
+
+三、LinkedHashSet
+根据元素的hashCode值来决定元素的存储位置
+以元素的添加顺序访问集合的元素
+
+
+
+
+看到array，就要想到角标。
+看到link，就要想到first，last。
+看到hash，就要想到hashCode,equals.
+看到tree，就要想到两个接口。Comparable，Comparator。
