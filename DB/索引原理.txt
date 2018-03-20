@@ -2,3 +2,7 @@
 索引是数据结构。
 
 为了构建一种数据结构，可以在上面应用一种高效的查询算法，最终提高数据的查询速度。
+
+B-Tree  B+Tree
+
+https://www.cnblogs.com/tgycoder/p/5410057.html

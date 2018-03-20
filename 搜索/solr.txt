@@ -67,3 +67,44 @@ Document Frequency（df），表示有多少文档中出现过这个Trem，df越大表示越不重要
 StandardAnalyzer//单字分词器
 IKAnalyzer/二分法分词
 CJKAnalyzer/庖丁分词器， 中文分词
+
+对index 和 query 都设置analyzer
+公司使用 Tokenizer 和 Filter 结合一起
+tokenizer：接收text（通过从solr那里获得一个reader来读取文本），拆分成tokens，输出token stream；将句子拆成一个个的词
+filter：接收token stream，对每个token进行处理（比如：替换、丢弃、不理），输出token stream；经过Tokenizer分词之后，再进行的继续处理，比如全转成小写，时态处理， 去掉语气词等。。。
+例如：
+<fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+        <!-- in this example, we will only use synonyms at query time
+        <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
+        -->
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+        <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
+	
+
+具体使用时：
+SolrQuery query 对象
+
+query.addFilterQuery(new String[]{"content:(001 or 002)"});
+query.setQuery(String.format("\"%s\"", new Object[] { keyword }));
+query.setParam("q", new String[] { keyword });
+query.setParam("df", new String[] { "id" });
+
+query.setSort("content",SolrQuery.ORDER.asc);
+query.setStart(10);
+query.setRows(100);
+
+QueryResponse rsp = SolrServer.query(params);
+List<NewsIndexData> newsIndexData = rsp.getBeans(NewsIndexData.class);
+
+
+
