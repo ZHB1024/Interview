@@ -1,0 +1,18 @@
+
+  阻塞队列
+  七种
+
+方法\处理方式      抛出异常		返回特殊值		一直阻塞		超时退出
+添加方法			add(e) 		offer(e)		 put(e) 	offer(e,time,unit) 
+删除方法            remove(e)	poll()			 take()     poll(time,unit)
+检查方法            element()   peek()           不可用      不可用
+  
+  
+  
+1、ArrayBlockingQueue
+底层是Object数组实现，通过 ReentrantLock .lock() .unlock()  .newCondition();
+初始化容量capacity，里面有 当前队列大小count，当前putIndex，当前takeIndex，还有notFull和notEmpty（Condition类有await()和signal()方法）
+添加时，如果满了，notFull.await()等待;不满时，notEmpty.signal（）唤醒
+取元素时，如果没有notEmpty.await()；有元素，notFull.signal（）
+
+  
