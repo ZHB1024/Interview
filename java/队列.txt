@@ -10,9 +10,35 @@
   
   
 1、ArrayBlockingQueue
-底层是Object数组实现，通过 ReentrantLock .lock() .unlock()  .newCondition();
+底层是Object数组实现，通过 ReentrantLock .lock() .lockInterruptibly() .unlock()  .newCondition();
 初始化容量capacity，里面有 当前队列大小count，当前putIndex，当前takeIndex，还有notFull和notEmpty（Condition类有await()和signal()方法）
 添加时，如果满了，notFull.await()等待;不满时，notEmpty.signal（）唤醒
 取元素时，如果没有notEmpty.await()；有元素，notFull.signal（）
+
+2、PriorityQueue
+底层是Object数组实现，元素实现Comparator接口，
+默认容量capacity 11
+
+
+3、LinkedBlockingQueue
+链表 Node 接点，包含元素，和下一个元素的地址；通过 ReentrantLock  .lock() .lockInterruptibly() .unlock()   .newCondition();
+默认容量capacity Integer.MAX_VALUE
+
+
+4、LinkedTransferQueue
+
+
+
+5、LinkedBlockingDeque
+
+
+
+6、SynchronousQueue
+
+
+
+7、DelayQueue
+底层是 PriorityQueue
+
 
   
