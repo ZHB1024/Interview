@@ -1,5 +1,9 @@
 https://www.cnblogs.com/wang-meng/p/5808006.html
 
+
+初始容量16 负载因子0.75 也就是超过12个时就要resize
+底层哈希表，采用数组和链表的方式。使用“拉链法”来解决hash冲突
+
 一、HashMap
 非线程安全的
 键和值都允许有null值存在
@@ -11,21 +15,24 @@ Java中数据存储方式最底层的两种结构，一种是数组，另一种就是链表，数组的特点：连续
 哈希表具有较快（常量级）的查询速度，及相对较快的增删速度，所以很适合在海量数据的环境中使用。一般实现哈希表的方法采用“拉链法”，
 
 二、HashTable
-线程安全的,对对象加锁
-键和值都不允许有null值存在,如果key为null，直接抛出NullPointerException
+线程安全 利用synchronized实现，对对象加锁
+key 和 value 都不允许为空,如果null，直接抛出NullPointerException
 HashTable和HashMap采用相同的存储机制，二者的实现基本一致，不同的是：
 1、HashMap是非线程安全的，HashTable是线程安全的，内部的方法基本都是synchronized。
 2、HashTable不允许有null值的存在。
 在HashTable中调用put方法时，如果key为null，直接抛出NullPointerException。其它细微的差别还有，比如初始化Entry数组的大小等等，但基本思想和HashMap一样。
 
 三、ConcurrentHashMap
-线程安全的,基于lock操作
-允许16个线程并发无阻塞的操作集合对象，尽可能地减少并发时的阻塞现象
-ConcurrentHashMap是线程安全的HashMap的实现。同样是线程安全的类，它与HashTable在同步方面有什么不同呢？
-之前我们说，synchronized关键字加锁的原理，其实是对对象加锁，不论你是在方法前加synchronized还是语句块前加，锁住的都是对象整体，
-但是ConcurrentHashMap的同步机制和这个不同，它不是加synchronized关键字，而是基于lock操作的，这样的目的是保证同步的时候，锁住的不是整个对象。
-事实上，ConcurrentHashMap可以满足concurrentLevel个线程并发无阻塞的操作集合对象。
+线程安全的 利用分段锁实现
+key 和 value 都不允许为空，如果null，直接抛出NullPointerException
+采用了分段锁的设计，只有在同一个分段内才存在竞态关系，不同的分段锁之间没有锁竞争。相比于对整个Map加锁的设计，分段锁大大的提高了高并发环境下的处理能力。
+但同时，由于不是对整个Map加锁，导致一些需要扫描整个Map的方法（如size(), containsValue()）需要使用特殊的实现，
+另外一些方法（如clear()）甚至放弃了对一致性的要求（ConcurrentHashMap是弱一致性的
+分段锁称为Segment，它即类似于HashMap（JDK7与JDK8中HashMap的实现）的结构，即内部拥有一个Entry数组，数组中的每个元素又是一个链表；
+同时又是一个ReentrantLock（Segment继承了ReentrantLock）。ConcurrentHashMap中的HashEntry相对于HashMap中的Entry有一定的差异性：
+HashEntry中的value以及next都被volatile修饰，这样在多线程读写过程中能够保持它们的可见性
 
+允许16个线程并发无阻塞的操作集合对象，尽可能地减少并发时的阻塞现象
 
 通过分析Hashtable就知道，synchronized是针对整张Hash表的，即每次锁住整张表让线程独占，ConcurrentHashMap允许多个修改操作并发进行，
 其关键在于使用了锁分离技术。它使用了多个锁来控制对hash表的不同部分进行的修改。
