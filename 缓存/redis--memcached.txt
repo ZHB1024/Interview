@@ -1,0 +1,12 @@
+
+https://www.biaodianfu.com/redis-vs-memcached.html
+
+ Key-Value数据库，redis、memcached
+ 
+ 数据都是缓存在内存中
+ 
+ redis
+ 1、支持的value类型更多，5种，string、list、set、zset（sort set）、hash
+ 2、可持久化到文件或数据库，也会周期性的把更新的数据写入磁盘或者把修改操作写入追加的记录文件
+ 3、master-slave(主从)同步，数据可以从主服务器向任意数量的从服务器上同步，实现了发布/订阅机制，使得从数据库在任何地方同步树时，可订阅一个频道并接收主服务器完整的消息发布记录
+ 4、高性能
