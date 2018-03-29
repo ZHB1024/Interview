@@ -25,6 +25,7 @@ HashTable和HashMap采用相同的存储机制，二者的实现基本一致，不同的是：
 三、ConcurrentHashMap
 线程安全的 利用分段锁实现
 key 和 value 都不允许为空，如果null，直接抛出NullPointerException
+每次不是锁全表，而是锁单独的一个Segment。所以ConcurrentHashMap 的性能比HashTable好。
 采用了分段锁的设计，只有在同一个分段内才存在竞态关系，不同的分段锁之间没有锁竞争。相比于对整个Map加锁的设计，分段锁大大的提高了高并发环境下的处理能力。
 但同时，由于不是对整个Map加锁，导致一些需要扫描整个Map的方法（如size(), containsValue()）需要使用特殊的实现，
 另外一些方法（如clear()）甚至放弃了对一致性的要求（ConcurrentHashMap是弱一致性的

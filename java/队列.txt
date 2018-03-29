@@ -8,6 +8,11 @@
 检查方法            element()   peek()           不可用      不可用
   
   
+1、ArrayBlockingQueue数据是放在一个数组中。LinkedBlockingQueue是放在一个Node节点中，构成一个链接。
+2、ArrayBlockingQueue取元素和放元素都是同一个锁，而LinkedBlockingQueue有两个锁，一个放入锁，一个取得锁。
+分别对应放入元素和取得元素时的操作。这是由链表的结构所确定的。但是删除一个元素时，要同时获得放入锁和取得锁。
+
+
   
 1、ArrayBlockingQueue
 底层是Object数组实现，通过 ReentrantLock .lock() .lockInterruptibly() .unlock()  .newCondition();
@@ -19,23 +24,21 @@
 底层是Object数组实现，元素实现Comparator接口，
 默认容量capacity 11
 
-
 3、LinkedBlockingQueue
 链表 Node 接点，包含元素，和下一个元素的地址；通过 ReentrantLock  .lock() .lockInterruptibly() .unlock()   .newCondition();
 默认容量capacity Integer.MAX_VALUE
 
-
 4、LinkedTransferQueue
-
 
 
 5、LinkedBlockingDeque
 
 
-
 6、SynchronousQueue
-
-
+1.容量为0，无论何时 size方法总是返回0
+2. put操作阻塞， 直到另外一个线程取走队列的元素。
+3.take操作阻塞，直到另外的线程put某个元素到队列中。
+4. 任何线程只能取得其他线程put进去的元素，而不会取到自己put进去的元素
 
 7、DelayQueue
 底层是 PriorityQueue
