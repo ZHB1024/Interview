@@ -103,7 +103,7 @@ query.setSort("content",SolrQuery.ORDER.asc);
 query.setStart(10);
 query.setRows(100);
 
-QueryResponse rsp = SolrServer.query(params);
+QueryResponse rsp = SolrServer.query(query);
 List<NewsIndexData> newsIndexData = rsp.getBeans(NewsIndexData.class);
 
 
