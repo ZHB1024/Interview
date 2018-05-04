@@ -1,5 +1,7 @@
 
 
+https://www.cnblogs.com/best/p/5679656.html
+
 AOP（Aspect-Oriented Programming，面向切面编程）是一种编程思想，并不是一种具体的实现，谈到实现一般有Filter和代理模式两种常见的使用方式，
 spring中的AOP也是封装代理模式完成的，可以说是OOP（Object-Oriented Programing，面向对象编程）的补充和完善。
 OOP利用封装、继承和多态把一切事物打造成对象结构，但是对于所有对象中都存在的一些公共行为，
