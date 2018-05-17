@@ -4,6 +4,9 @@ https://www.jianshu.com/p/bcc614524024
 MySQL 事务（Database Transaction）
 是指作为单个逻辑工作单元执行的一系列操作，要么完全执行，要么完全地不执行。
 
+默认的事务隔离级别为repeatable-read
+大多数数据库默认的事务隔离级别是Read committed，比如Sql Server , Oracle。Mysql的默认隔离级别是Repeatable read。
+
 ACID
 原子性（Atomicity）
 原子性是指事务包含的所有操作要么全部成功，要么全部失败回滚。
