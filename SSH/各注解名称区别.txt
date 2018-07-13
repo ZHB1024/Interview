@@ -2,18 +2,22 @@
 @Controller
 请求的bean
 
-@RequestMapping
+@RequestMapping("/certificateUnlockController")
 springMVC中 指示请求路径、方式等
 
 @Autowired
 引入bean，默认byType
 
-@Resource
+@Resource(name = "attachmentManager")
 引入bean，默认byName
 
-@Service
+@Service("busCertUnlockService")
 指示此bean在service层
 
 
 @Transactional
 在service层开启事务
+
+
+@Qualifier("sessionFactory")
+指明要用哪一个bean
