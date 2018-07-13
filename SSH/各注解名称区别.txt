@@ -1,0 +1,19 @@
+
+@Controller
+请求的bean
+
+@RequestMapping
+springMVC中 指示请求路径、方式等
+
+@Autowired
+引入bean，默认byType
+
+@Resource
+引入bean，默认byName
+
+@Service
+指示此bean在service层
+
+
+@Transactional
+在service层开启事务
